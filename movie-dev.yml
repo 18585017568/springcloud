@@ -1,0 +1,42 @@
+server:
+  # 端口
+  port: 8001
+  servlet:
+    context-path: /
+
+
+spring:
+  application:
+    # 服务名称
+    name: micro-movie
+
+
+# 服务消费者
+eureka:
+  client:
+    # 获取注册信息（消费服务）
+    fetch-registry: true
+    # 间隔获取服务，默认30秒（单位秒）
+    registry-fetch-interval-seconds: 30
+    # 注册该服务（生产服务，这里配置true，是为了让网关检测到）
+    register-with-eureka: true
+    # 注册服务地址
+    service-url:
+      defaultZone: http://127.0.0.1:8888/eureka
+  instance:
+    # 优先使用IP地址进行注册，强烈建议
+    prefer-ip-address: true
+
+
+# 修改Ribbon负载均衡算法
+# 不同的负载均衡，参考：https://my.oschina.net/u/3621360/blog/2243609
+# 也可以自定义算法，只要实现相应接口，指定路径到你的实现类即可
+micros-user:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule
+
+
+# 开启熔断器
+feign:
+  hystrix:
+    enabled: true
